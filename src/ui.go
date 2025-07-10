@@ -8,7 +8,6 @@ import (
 )
 
 var (
-	// Color functions for better UI
 	green   = color.New(color.FgGreen).SprintFunc()
 	blue    = color.New(color.FgBlue).SprintFunc()
 	yellow  = color.New(color.FgYellow).SprintFunc()
