@@ -4,6 +4,7 @@ BINARY_NAME=brewpy
 VERSION?=1.0.0
 BUILD_DIR=build
 DIST_DIR=dist
+SRC_DIR=src
 
 GOCMD=go
 GOBUILD=$(GOCMD) build
@@ -32,19 +33,19 @@ help:
 build:
 	@echo "Building $(BINARY_NAME)..."
 	@mkdir -p $(BUILD_DIR)
-	$(GOBUILD) $(LDFLAGS) -o $(BUILD_DIR)/$(BINARY_NAME) .
+	cd $(SRC_DIR) && $(GOBUILD) $(LDFLAGS) -o ../$(BUILD_DIR)/$(BINARY_NAME) .
 	@echo "Build complete: $(BUILD_DIR)/$(BINARY_NAME)"
 
 clean:
 	@echo "Cleaning..."
-	$(GOCLEAN)
+	cd $(SRC_DIR) && $(GOCLEAN)
 	@rm -rf $(BUILD_DIR) $(DIST_DIR)
 	@echo "Clean complete"
 
 deps:
 	@echo "Downloading dependencies..."
-	$(GOMOD) download
-	$(GOMOD) tidy
+	cd $(SRC_DIR) && $(GOMOD) download
+	cd $(SRC_DIR) && $(GOMOD) tidy
 	@echo "Dependencies ready"
 
 install: build
@@ -65,10 +66,10 @@ release: clean deps
 	@mkdir -p $(DIST_DIR)
 	
 	@echo "Building for macOS ARM64..."
-	@GOOS=darwin GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o $(DIST_DIR)/$(BINARY_NAME)-darwin-arm64 .
+	cd $(SRC_DIR) && GOOS=darwin GOARCH=arm64 $(GOBUILD) $(LDFLAGS) -o ../$(DIST_DIR)/$(BINARY_NAME)-darwin-arm64 .
 	
 	@echo "Building for macOS AMD64..."
-	@GOOS=darwin GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(DIST_DIR)/$(BINARY_NAME)-darwin-amd64 .
+	cd $(SRC_DIR) && GOOS=darwin GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o ../$(DIST_DIR)/$(BINARY_NAME)-darwin-amd64 .
 	
 	@echo "Creating tarballs..."
 	@cd $(DIST_DIR) && tar -czf $(BINARY_NAME)-v$(VERSION)-darwin-arm64.tar.gz $(BINARY_NAME)-darwin-arm64
@@ -86,5 +87,5 @@ release: clean deps
 
 dev:
 	@echo "Building for development..."
-	$(GOBUILD) -o $(BINARY_NAME) .
+	cd $(SRC_DIR) && $(GOBUILD) -o ../$(BINARY_NAME) .
 	@echo "Development build complete" 
