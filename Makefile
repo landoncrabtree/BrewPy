@@ -14,7 +14,7 @@ GOMOD=$(GOCMD) mod
 
 LDFLAGS=-ldflags "-s -w"
 
-.PHONY: all build clean deps help install uninstall release
+.PHONY: all build clean deps help install uninstall release dev auto-release
 
 all: clean deps build
 
@@ -28,6 +28,7 @@ help:
 	@echo "  install   - Install locally"
 	@echo "  uninstall - Remove local installation"
 	@echo "  release   - Create release artifacts"
+	@echo "  auto-release - Create release artifacts and push to GitHub"
 	@echo "  help      - Show this help message"
 
 build:
@@ -89,3 +90,9 @@ dev:
 	@echo "Building for development..."
 	cd $(SRC_DIR) && $(GOBUILD) -o ../$(BINARY_NAME) .
 	@echo "Development build complete" 
+
+auto-release:
+	@echo "Creating release artifacts and pushing to GitHub..."
+	@chmod +x scripts/release.sh
+	@./scripts/release.sh $(VERSION)
+	@echo "Release complete"

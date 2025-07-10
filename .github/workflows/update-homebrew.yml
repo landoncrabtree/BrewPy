@@ -1,0 +1,81 @@
+name: Update Homebrew Formula
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout main repository
+      uses: actions/checkout@v4
+      
+    - name: Get release information
+      id: release
+      run: |
+        echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        
+    - name: Download release tarball and calculate SHA256
+      id: sha256
+      run: |
+        URL="https://github.com/landoncrabtree/brewpy/archive/refs/tags/${{ steps.release.outputs.tag_name }}.tar.gz"
+        SHA256=$(curl -L "$URL" | sha256sum | cut -d' ' -f1)
+        echo "sha256=$SHA256" >> $GITHUB_OUTPUT
+        echo "url=$URL" >> $GITHUB_OUTPUT
+        
+    - name: Checkout tap repository
+      uses: actions/checkout@v4
+      with:
+        repository: landoncrabtree/homebrew-brewpy
+        token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        path: homebrew-brewpy
+        
+    - name: Update formula
+      run: |
+        cd homebrew-brewpy
+        
+        # Update the formula file
+        cat > brewpy.rb << EOF
+        class Brewpy < Formula
+          desc "🍺 BrewPy - Python Version Manager for Homebrew"
+          homepage "https://github.com/landoncrabtree/brewpy"
+          url "${{ steps.sha256.outputs.url }}"
+          sha256 "${{ steps.sha256.outputs.sha256 }}"
+          license "MIT"
+
+          depends_on "go" => :build
+
+          def install
+            cd "src" do
+              system "go", "build", *std_go_args(ldflags: "-s -w")
+            end
+          end
+
+          def post_install
+            puts <<~EOS
+              🍺 BrewPy installed successfully!
+              
+              Usage:
+                brewpy versions        # List available Python versions
+                brewpy use [version]   # Switch Python version
+                brewpy current         # Show current version
+            EOS
+          end
+
+          test do
+            system "#{bin}/brewpy", "--help"
+          end
+        end
+        EOF
+        
+    - name: Commit and push changes
+      run: |
+        cd homebrew-brewpy
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add brewpy.rb
+        git commit -m "Update BrewPy to ${{ steps.release.outputs.tag_name }}"
+        git push
