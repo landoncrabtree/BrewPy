@@ -94,5 +94,10 @@ dev:
 auto-release:
 	@echo "Creating release artifacts and pushing to GitHub..."
 	@chmod +x scripts/release.sh
+	@if [ "$(VERSION)" = "1.0.0" ]; then \
+		echo "Usage: make auto-release VERSION=x.x.x"; \
+		echo "Example: make auto-release VERSION=1.0.1"; \
+		exit 1; \
+	fi
 	@./scripts/release.sh $(VERSION)
 	@echo "Release complete"
