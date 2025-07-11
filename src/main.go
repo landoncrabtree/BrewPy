@@ -44,7 +44,6 @@ func handleConfigCommand() {
 			fmt.Printf("Available subcommands: %s\n", cyan("show"))
 		}
 	} else {
-		// No subcommand, run interactive configuration
 		handleConfigure()
 	}
 }
