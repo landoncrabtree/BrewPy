@@ -63,7 +63,7 @@ jobs:
           end
 
           test do
-            system "bin/brewpy", "--help"
+            system bin/"brewpy", "--help"
           end
         end
         EOF
