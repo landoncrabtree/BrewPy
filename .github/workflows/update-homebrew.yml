@@ -41,7 +41,7 @@ jobs:
         # Update the formula file
         cat > brewpy.rb << EOF
         class Brewpy < Formula
-          desc "A Python version manager designed for macOS and Homebrew"
+          desc "Python version manager designed for macOS and Homebrew"
           homepage "https://github.com/landoncrabtree/brewpy"
           url "${{ steps.sha256.outputs.url }}"
           sha256 "${{ steps.sha256.outputs.sha256 }}"

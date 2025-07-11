@@ -25,7 +25,7 @@ func showUsage() {
   %s - configure BrewPy settings interactively
   %s - show current BrewPy configuration
 `,
-		bold("🍺 BrewPy - Python Version Manager"),
+		bold("🍺 BrewPy - Homebrew Python Version Manager"),
 		cyan("brewpy versions"),
 		cyan("brewpy use [version]"),
 		cyan("brewpy init"),

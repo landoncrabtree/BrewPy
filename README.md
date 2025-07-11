@@ -1,6 +1,6 @@
 # 🍺 BrewPy
 
-A Python version manager designed for Homebrew on macOS.
+Homebrew Python Version Manager
 
 ## Why?
 
