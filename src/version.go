@@ -46,12 +46,10 @@ func findPythonVersions() ([]string, error) {
 }
 
 func getCurrentVersion() string {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return ""
-	}
-
-	pythonShim := filepath.Join(homeDir, brewpyDir, shimsDir, "python")
+	config := loadConfig()
+	
+	shimsDir := getShimsDir(config.BrewPyDir)
+	pythonShim := filepath.Join(shimsDir, "python")
 	if _, err := os.Lstat(pythonShim); os.IsNotExist(err) {
 		return ""
 	}

@@ -23,10 +23,29 @@ func main() {
 		handleInit()
 	case "current":
 		handleCurrent()
+	case "config", "configure":
+		handleConfigCommand()
 	case "--help", "-h", "help":
 		showUsage()
 	default:
 		showUsage()
+	}
+}
+
+func handleConfigCommand() {
+	// Check if there's a subcommand
+	if len(os.Args) >= 3 {
+		subCmd := os.Args[2]
+		switch subCmd {
+		case "show":
+			handleConfigShow()
+		default:
+			fmt.Printf("%s Unknown config subcommand: %s\n", red("Error:"), subCmd)
+			fmt.Printf("Available subcommands: %s\n", cyan("show"))
+		}
+	} else {
+		// No subcommand, run interactive configuration
+		handleConfigure()
 	}
 }
 

@@ -4,19 +4,13 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"path/filepath"
 	"strings"
 )
 
 func updateShellProfile() error {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return err
-	}
-
-	zshrcFull := filepath.Join(homeDir, zshrcPath)
-
-	content, err := os.ReadFile(zshrcFull)
+	config := loadConfig()
+	
+	content, err := os.ReadFile(config.ShellRC)
 	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
@@ -50,10 +44,11 @@ func updateShellProfile() error {
 	lines = append(lines, initBlock...)
 
 	// Write back to file
-	return os.WriteFile(zshrcFull, []byte(strings.Join(lines, "\n")), fs.ModePerm)
+	return os.WriteFile(config.ShellRC, []byte(strings.Join(lines, "\n")), fs.ModePerm)
 }
 
 func outputShellInit(homeDir string) {
-	shimsPath := filepath.Join(homeDir, brewpyDir, shimsDir)
+	config := loadConfig()
+	shimsPath := getShimsDir(config.BrewPyDir)
 	fmt.Printf("export PATH=\"%s:$PATH\"", shimsPath)
 } 

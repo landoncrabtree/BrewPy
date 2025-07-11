@@ -22,12 +22,16 @@ func showUsage() {
   %s - set python version (e.g. Python3.11). If no version given, prompts selection
   %s - output shell configuration
   %s - show currently active python version
+  %s - configure BrewPy settings interactively
+  %s - show current BrewPy configuration
 `,
 		bold("🍺 BrewPy - Python Version Manager"),
 		cyan("brewpy versions"),
 		cyan("brewpy use [version]"),
 		cyan("brewpy init"),
 		cyan("brewpy current"),
+		cyan("brewpy config"),
+		cyan("brewpy config show"),
 	)
 }
 

@@ -8,15 +8,12 @@ import (
 )
 
 func createSymlinks(version string) error {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return err
-	}
+	config := loadConfig()
+	
+	shimsPath := getShimsDir(config.BrewPyDir)
 
-	shimsPath := filepath.Join(homeDir, brewpyDir, shimsDir)
-
-	// Create ~/.brewpy/shims directory if it doesn't exist
-	err = os.MkdirAll(shimsPath, 0755)
+	// Create shims directory if it doesn't exist (though initConfig should have done this)
+	err := os.MkdirAll(shimsPath, 0755)
 	if err != nil {
 		return err
 	}
