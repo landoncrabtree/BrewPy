@@ -21,7 +21,7 @@ I was previously using `pyenv`, but it would break everytime there was a new ver
 brew tap landoncrabtree/brewpy
 
 # Install brewpy
-brew install brewpy
+brew install landoncrabtree/brewpy/brewpy
 ```
 
 ### From Source
