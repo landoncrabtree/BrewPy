@@ -58,8 +58,7 @@ if command -v gh &> /dev/null; then
 
 ### Installation
 \`\`\`bash
-brew tap landoncrabtree/brewpy
-brew install brewpy
+brew install landoncrabtree/tap/brewpy
 \`\`\`" \
         dist/brewpy-v$VERSION-darwin-arm64.tar.gz \
         dist/brewpy-v$VERSION-darwin-amd64.tar.gz \
