@@ -30,13 +30,13 @@ jobs:
     - name: Checkout tap repository
       uses: actions/checkout@v4
       with:
-        repository: landoncrabtree/homebrew-brewpy
+        repository: landoncrabtree/homebrew-tap
         token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-        path: homebrew-brewpy
+        path: homebrew-tap
         
     - name: Update formula
       run: |
-        cd homebrew-brewpy
+        cd homebrew-tap/Formula/b
         
         # Update the formula file
         cat > brewpy.rb << EOF
@@ -70,9 +70,9 @@ jobs:
         
     - name: Commit and push changes
       run: |
-        cd homebrew-brewpy
+        cd homebrew-tap
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        git add brewpy.rb
+        git add Formula/b/brewpy.rb
         git commit -m "Update BrewPy to ${{ steps.release.outputs.tag_name }}"
         git push
