@@ -17,7 +17,7 @@ I was previously using `pyenv`, but it would break everytime there was a new ver
 ### Via Homebrew (Recommended)
 
 ```bash
-brew install landoncrabtree/brewpy/brewpy
+brew install landoncrabtree/tap/brewpy
 ```
 
 ### From Source
